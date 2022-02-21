@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "891240496594",
+    "firebase_url": "https://appointzz-default-rtdb.firebaseio.com",
+    "project_id": "appointzz",
+    "storage_bucket": "appointzz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891240496594:android:917950fad79eced4e95c0b",
+        "android_client_info": {
+          "package_name": "com.appointzz.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891240496594-2gq34g74srfj3rfb8k1kqoqk5pv2srg2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcfpCc3Z2yxVgoFC8hxUobSgRocVSFlMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891240496594-2gq34g74srfj3rfb8k1kqoqk5pv2srg2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
