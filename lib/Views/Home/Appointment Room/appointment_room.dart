@@ -28,7 +28,7 @@ class _MeetingState extends State<Meeting> {
   SharedPreferences? _sharedPreferences;
   String? firstNameSP;
   String? emailSP;
-  String? customerIdSP;
+  String? customerIdSP = 'customerId';
   String? _roomId;
 
   @override
@@ -296,7 +296,8 @@ class _MeetingState extends State<Meeting> {
 
       firstNameSP = _sharedPreferences!.getString("first_name");
       emailSP = _sharedPreferences!.getString("email");
-      customerIdSP = _sharedPreferences!.getString("costumer_id");
+      customerIdSP = "customer_id";
+      // customerIdSP = _sharedPreferences!.getString("costumer_id");
 
       debugPrint('checking type $emailSP ');
       _makeUserEndId();
