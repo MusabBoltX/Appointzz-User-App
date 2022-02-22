@@ -127,9 +127,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
                               height: 20,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                children: const [
-                                  Text("4.7 "),
-                                  Icon(Icons.star),
+                                children: [
+                                  const Text("4.7 "),
+                                  Icon(Icons.star, size: 18, color: cleanDarkBlueGrey,),
                                 ],
                               ),
                             ),///--Stars

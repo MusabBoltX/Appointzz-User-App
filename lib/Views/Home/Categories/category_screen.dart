@@ -41,30 +41,38 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
               Expanded(
                 child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                            maxCrossAxisExtent: 200,
-                            childAspectRatio: 3 / 2,
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20),
+                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
+                      childAspectRatio: 3 / 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
                     itemCount: _deptList.length,
                     itemBuilder: (BuildContext ctx, index) {
                       return GestureDetector(
-                        onTap: (){
-                          Navigator.push(context, CupertinoPageRoute(builder: (context) => const DoctorsList()));
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => const DoctorsList()));
                         },
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            _deptList[index],
-                            style: TextStyle(
-                                color: cleanWhite,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          decoration: BoxDecoration(
-                              color: cleanDarkBlueGrey,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15)),
+                          elevation: 5,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              _deptList[index],
+                              style: TextStyle(
+                                  color: cleanWhite,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                            decoration: BoxDecoration(
+                                color: cleanDarkBlueGrey,
+                                borderRadius: BorderRadius.circular(15)),
+                          ),
                         ),
                       );
                     }),
