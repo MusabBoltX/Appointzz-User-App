@@ -54,7 +54,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => const DoctorsList()));
+                                  builder: (context) => DoctorsList(
+                                    category: _deptList[index],
+                                  )));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(

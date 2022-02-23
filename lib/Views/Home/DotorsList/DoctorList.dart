@@ -1,8 +1,14 @@
+import 'package:appointz_client/Services/ColorPicker.dart';
 import 'package:flutter/material.dart';
 import 'HelperCard/DoctorCard.dart';
 
 class DoctorsList extends StatefulWidget {
-  const DoctorsList({Key? key}) : super(key: key);
+  final String category;
+
+  const DoctorsList({
+    Key? key,
+    required this.category,
+  }) : super(key: key);
 
   @override
   _DoctorsListState createState() => _DoctorsListState();
@@ -25,35 +31,52 @@ class _DoctorsListState extends State<DoctorsList> {
               Navigator.of(context).pop();
             }),
         backgroundColor: const Color.fromRGBO(7, 78, 99, 0.7),
-        title: Image.asset(
-          'assests/logo.png',
-          color: const Color.fromRGBO(231, 232, 225, 1),
-          // color: Colors.black,
-          scale: 4.3,
+        title: Text(
+          widget.category,
+          style: TextStyle(color: cleanWhite),
         ),
       ),
       body: Column(
         children: [
           SizedBox(
-            // height: 100,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '\nCurrently Available Doctor: ',
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Text(
-                  "Dr. Stuart",
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  "Current Token Number: 003\n",
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-              ],
+            width: MediaQuery.of(context).size.width * 1,
+            child: Card(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '\nCurrently Available Doctor: ',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Text(
+                    "Dr. Stuart",
+                    style: TextStyle(
+                      color: cleanDarkBlueGrey,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Text(
+                        'Current Token No: ',
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      Text(
+                        "003",
+                        style: TextStyle(
+                          color: cleanDarkBlueGrey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(

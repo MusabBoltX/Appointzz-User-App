@@ -110,17 +110,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
 
-                /// --- First Name
-                // Container(
-                //   padding: EdgeInsets.only(bottom: 3),
-                //   child: Row(
-                //     children: [
-                //       Text('    First Name*',
-                //           textScaleFactor: 1.0,
-                //           style: TextStyle(fontWeight: FontWeight.w600)),
-                //     ],
-                //   ),),
-
+                /// --- Full Name
                 Theme(
                   data: ThemeData(primaryColor: Colors.transparent),
                   child: SizedBox(
@@ -151,57 +141,8 @@ class _SignUpState extends State<SignUp> {
                                 decoration: const InputDecoration(
                                     hintText: 'First Name',
                                     enabledBorder: InputBorder.none,
-                                    contentPadding: EdgeInsets.only(left: 7)),
-                              ),
-                            ),
-                          ],
-                        )),
-                  ),
-                ),
-
-                /// --- Last Name
-                // Container(
-                //   padding: EdgeInsets.only(bottom: 3),
-                //   child: Row(
-                //     children: [
-                //       Text('\n    Last Name*',
-                //           textScaleFactor: 1.0,
-                //           style: TextStyle(fontWeight: FontWeight.w600)),
-                //     ],
-                //   ),),
-
-                Container(height: 20),
-
-                Theme(
-                  data: ThemeData(primaryColor: Colors.transparent),
-                  child: SizedBox(
-                    height: 55,
-                    child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        elevation: 2,
-                        margin: const EdgeInsets.only(right: 10, left: 10),
-                        color: Colors.white,
-                        child: Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.person,
-                                color: Color.fromRGBO(7, 78, 99, 0.7),
-                              ),
-                            ),
-                            SizedBox(
-                              // color: Colors.blue,
-                              width: MediaQuery.of(context).size.width * 0.65,
-                              child: TextField(
-                                maxLines: 1,
-                                selectionWidthStyle: BoxWidthStyle.tight,
-                                controller: lastNameController,
-                                cursorColor: const Color.fromRGBO(7, 78, 99, 0.7),
-                                decoration: const InputDecoration(
-                                    hintText: 'Last Name',
-                                    enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
                                     contentPadding: EdgeInsets.only(left: 7)),
                               ),
                             ),
@@ -243,6 +184,8 @@ class _SignUpState extends State<SignUp> {
                                 decoration: const InputDecoration(
                                     hintText: 'Email',
                                     enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
                                     contentPadding: EdgeInsets.only(left: 7)),
                               ),
                             ),
@@ -283,6 +226,8 @@ class _SignUpState extends State<SignUp> {
                                 decoration: const InputDecoration(
                                     hintText: 'Password',
                                     enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
                                     contentPadding: EdgeInsets.only(left: 7)),
                               ),
                             ),
@@ -323,6 +268,8 @@ class _SignUpState extends State<SignUp> {
                                 decoration: const InputDecoration(
                                     hintText: 'Confirm Password',
                                     enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
                                     contentPadding: EdgeInsets.only(left: 7)),
                               ),
                             ),
@@ -394,6 +341,8 @@ class _SignUpState extends State<SignUp> {
                                     prefix: Text(
                                         setNumber == null ? "" : setNumber.toString()),
                                     enabledBorder: InputBorder.none,
+                                    focusedBorder: InputBorder.none,
+                                    errorBorder: InputBorder.none,
                                     contentPadding: const EdgeInsets.only(left: 7)),
                               ),
                             ),
@@ -430,21 +379,6 @@ class _SignUpState extends State<SignUp> {
     });
 
     try {
-      // final newUser = await _auth.createUserWithEmailAndPassword(
-      //   email: emailController.text,
-      //   password: passController.text,
-      // );
-      //
-      // if (newUser != null) {
-      //   debugPrint('Sign Up Successful');
-      //   Navigator.push(context,
-      //       CupertinoPageRoute(builder: (context) => const HomePage()));
-      // } else {
-      //   debugPrint('Sign Up Failed');
-      // }
-      // setState(() {
-      //   loader = false;
-      // });
 
     } on SocketException {
       debugPrint('Sign Up Failed Sockets Suspension');

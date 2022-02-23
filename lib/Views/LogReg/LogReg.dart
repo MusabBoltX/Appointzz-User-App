@@ -48,7 +48,6 @@ class _LogRegState extends State<LogReg> {
 
             Container(
               width: MediaQuery.of(context).size.width*0.85,
-              // padding: EdgeInsets.only(left: 35),
               alignment: Alignment.topLeft,
               child: const Text('\nGet Consultancy In a Smarter Way Now',
                 textScaleFactor: 1,
@@ -162,12 +161,6 @@ class _LogRegState extends State<LogReg> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (ctx) => const HomePage()));
-        },
-        child: const Icon(Icons.send),
-      ),
     );
   }
 }

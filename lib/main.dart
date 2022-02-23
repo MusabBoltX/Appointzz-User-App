@@ -32,11 +32,9 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  // InternetChecker _internetChecker = InternetChecker();
   @override
   void initState() {
     super.initState();
-    // _internetChecker.connectionStatus();
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
           context, CupertinoPageRoute(builder: (context) => const LogReg()));
@@ -49,7 +47,6 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(7, 78, 99, 0.8),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it in the middle of the parent.
 
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -2,8 +2,8 @@ import 'package:appointz_client/Views/Home/Appointment%20Room/appointment_room.d
 import 'package:flutter/cupertino.dart';
 import 'package:appointz_client/Views/Drawer/DrawerItems.dart';
 import 'package:flutter/material.dart';
-import 'Categories/category_screen.dart';
 import 'Helpers/TokenCard.dart';
+import 'Specialitites/category_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
