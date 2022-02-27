@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:appointz_client/DatabaseHelpers/auth_helper.dart';
 import 'package:appointz_client/Services/toast.dart';
 import 'package:appointz_client/Views/Helpers/progress_hud.dart';
 import 'package:appointz_client/Views/Home/HomePage.dart';
@@ -21,6 +22,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController passController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+
   bool loader = false;
   final _auth = FirebaseAuth.instance;
   final ToastMsg _toast = ToastMsg();
@@ -155,11 +157,7 @@ class _LoginState extends State<Login> {
 
                 LoginButton(
                   onTapAction: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      CupertinoPageRoute(
-                          builder: (context) => const HomePage()),
-                      (Route<dynamic> route) => false,
-                    );
+                    _signIn();
                   },
                 ),
 
@@ -201,54 +199,38 @@ class _LoginState extends State<Login> {
   }
 
   Future _signIn() async {
-    // setState(() {
-    //   loader = true;
-    // });
-    //
-    // debugPrint(emailController.text.toString());
-    // debugPrint(passController.text.toString());
     try {
-      // final newUser = await _auth.signInWithEmailAndPassword(
-      //   email: emailController.text,
-      //   password: passController.text,
-      // );
-      //
-      // if (newUser != null) {
-      //   _toast.showToast('Sign In Successful');
-      //   debugPrint('Sign In Successful');
-      //   Navigator.push(context,
-      //       CupertinoPageRoute(builder: (context) => const HomePage()));
-      // } else {
-      //   debugPrint('Sign In Failed');
-      //   _toast.showToast('Sign In Failed');
-      // }
-      // setState(() {
-      //   loader = false;
-      // });
+
+      final newUser = await _auth.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passController.text,
+      );
+
+      if (newUser != null) {
+        _toast.showToast('Sign In Successful');
+        debugPrint('Sign In Successful');
+        Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => const HomePage()));
+      } else {
+        debugPrint('Sign In Failed');
+        _toast.showToast('Sign In Failed');
+      }
 
     } on SocketException {
       _toast.showToast('Sign Failed Sockets Suspension');
       debugPrint('Sign In Failed Sockets Suspension');
-      setState(() {
-        loader = false;
-      });
+
     } on HttpException {
       _toast.showToast('Http request failed');
       debugPrint('Sign In Failed Http request failed');
-      setState(() {
-        loader = false;
-      });
+
     } on FirebaseAuthException catch (firebaseError) {
       debugPrint(firebaseError.toString());
-      setState(() {
-        loader = false;
-      });
+
     } catch (e) {
       _toast.showToast("Sign In Failed");
       debugPrint('Sign In Failed $e');
-      setState(() {
-        loader = false;
-      });
+
     }
   }
 }

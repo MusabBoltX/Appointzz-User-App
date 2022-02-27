@@ -1,4 +1,6 @@
 import 'dart:ui';
+import 'package:appointz_client/DatabaseHelpers/auth_helper.dart';
+import 'package:appointz_client/Services/toast.dart';
 import 'package:appointz_client/Views/Helpers/progress_hud.dart';
 import 'package:appointz_client/Views/Home/HomePage.dart';
 import 'package:country_code_picker/country_code_picker.dart';
@@ -7,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'SignUp_Button.dart';
-
 
 class SignUp extends StatefulWidget {
   /// --- Third Receiver --- ///
@@ -21,7 +22,8 @@ class SignUp extends StatefulWidget {
   final String? doctorNameLast;
   final String? doctorFees;
 
-  const SignUp({Key? key,
+  const SignUp({
+    Key? key,
     this.doctorFees,
     this.id,
     this.doctorImage,
@@ -41,6 +43,7 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     super.initState();
+    init();
   }
 
   String country = '';
@@ -55,7 +58,6 @@ class _SignUpState extends State<SignUp> {
     debugPrint(country);
   }
 
-
   /// ========= Controllers ========= ///
   final nameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -66,7 +68,7 @@ class _SignUpState extends State<SignUp> {
 
   bool loader = false;
 
-  final _auth = FirebaseAuth.instance;
+  ToastMsg toastMsg = ToastMsg();
 
   @override
   Widget build(BuildContext context) {
@@ -103,10 +105,10 @@ class _SignUpState extends State<SignUp> {
                   textScaleFactor: 1.0,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(7, 78, 99, 0.8),
-                letterSpacing: 0.7,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromRGBO(7, 78, 99, 0.8),
+                    letterSpacing: 0.7,
                   ),
                 ),
 
@@ -137,9 +139,10 @@ class _SignUpState extends State<SignUp> {
                                 maxLines: 1,
                                 selectionWidthStyle: BoxWidthStyle.tight,
                                 controller: nameController,
-                                cursorColor: const Color.fromRGBO(7, 78, 99, 0.7),
+                                cursorColor:
+                                    const Color.fromRGBO(7, 78, 99, 0.7),
                                 decoration: const InputDecoration(
-                                    hintText: 'First Name',
+                                    hintText: 'Full Name',
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
                                     errorBorder: InputBorder.none,
@@ -180,7 +183,8 @@ class _SignUpState extends State<SignUp> {
                                 maxLines: 1,
                                 selectionWidthStyle: BoxWidthStyle.tight,
                                 controller: emailController,
-                                cursorColor: const Color.fromRGBO(7, 78, 99, 0.7),
+                                cursorColor:
+                                    const Color.fromRGBO(7, 78, 99, 0.7),
                                 decoration: const InputDecoration(
                                     hintText: 'Email',
                                     enabledBorder: InputBorder.none,
@@ -222,7 +226,8 @@ class _SignUpState extends State<SignUp> {
                                 maxLines: 1,
                                 selectionWidthStyle: BoxWidthStyle.tight,
                                 controller: passController,
-                                cursorColor: const Color.fromRGBO(7, 78, 99, 0.7),
+                                cursorColor:
+                                    const Color.fromRGBO(7, 78, 99, 0.7),
                                 decoration: const InputDecoration(
                                     hintText: 'Password',
                                     enabledBorder: InputBorder.none,
@@ -264,7 +269,8 @@ class _SignUpState extends State<SignUp> {
                                 maxLines: 1,
                                 selectionWidthStyle: BoxWidthStyle.tight,
                                 controller: confirmPassController,
-                                cursorColor: const Color.fromRGBO(7, 78, 99, 0.7),
+                                cursorColor:
+                                    const Color.fromRGBO(7, 78, 99, 0.7),
                                 decoration: const InputDecoration(
                                     hintText: 'Confirm Password',
                                     enabledBorder: InputBorder.none,
@@ -335,15 +341,18 @@ class _SignUpState extends State<SignUp> {
                                 maxLines: 1,
                                 selectionWidthStyle: BoxWidthStyle.tight,
                                 controller: phoneController,
-                                cursorColor: const Color.fromRGBO(7, 78, 99, 0.7),
+                                cursorColor:
+                                    const Color.fromRGBO(7, 78, 99, 0.7),
                                 decoration: InputDecoration(
                                     hintText: 'Phone',
-                                    prefix: Text(
-                                        setNumber == null ? "" : setNumber.toString()),
+                                    prefix: Text(setNumber == null
+                                        ? ""
+                                        : setNumber.toString()),
                                     enabledBorder: InputBorder.none,
                                     focusedBorder: InputBorder.none,
                                     errorBorder: InputBorder.none,
-                                    contentPadding: const EdgeInsets.only(left: 7)),
+                                    contentPadding:
+                                        const EdgeInsets.only(left: 7)),
                               ),
                             ),
                           ],
@@ -355,11 +364,7 @@ class _SignUpState extends State<SignUp> {
 
                 SignUpButton(
                   onTapAction: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      CupertinoPageRoute(
-                          builder: (context) => const HomePage()),
-                          (Route<dynamic> route) => false,
-                    );
+                    _signUp();
                   },
                 ),
 
@@ -372,35 +377,45 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
+  final _auth = FirebaseAuth.instance;
+  final ToastMsg _toast = ToastMsg();
+  FirestoreCollectionHelper firestoreCollectionHelper = FirestoreCollectionHelper();
+  List userCollection = [];
+
+  init(){
+    firestoreCollectionHelper.initialize1();
+  }
   Future _signUp() async {
-
-    setState(() {
-      loader = true;
-    });
-
     try {
+      final newUser = await _auth.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passController.text,
+      );
 
+      if (newUser != null) {
+        debugPrint('Sign In Successful');
+
+        firestoreCollectionHelper.createUserCollection(nameController.text, emailController.text, phoneController.text, country);
+
+        Future.delayed(const Duration(seconds: 1),(){
+          Navigator.push(context,
+              CupertinoPageRoute(builder: (context) => const HomePage()));
+        });
+      } else {
+        debugPrint('Sign In Failed');
+        _toast.showToast('Sign In Failed');
+      }
     } on SocketException {
-      debugPrint('Sign Up Failed Sockets Suspension');
-      setState(() {
-        loader = false;
-      });
-
+      _toast.showToast('Sign Failed Sockets Suspension');
+      debugPrint('Sign In Failed Sockets Suspension');
     } on HttpException {
-      debugPrint('Sign Up Failed Http request failed');
-      setState(() {
-        loader = false;
-      });
+      _toast.showToast('Http request failed');
+      debugPrint('Sign In Failed Http request failed');
     } on FirebaseAuthException catch (firebaseError) {
       debugPrint(firebaseError.toString());
-      setState(() {
-        loader = false;
-      });
     } catch (e) {
-      debugPrint('Sign Up Failed $e');
-      setState(() {
-        loader = false;
-      });
+      _toast.showToast("Sign In Failed");
+      debugPrint('Sign In Failed $e');
     }
   }
 }

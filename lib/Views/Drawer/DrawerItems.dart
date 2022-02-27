@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:appointz_client/DatabaseHelpers/auth_helper.dart';
 import 'package:appointz_client/Services/ColorPicker.dart';
+import 'package:appointz_client/Services/toast.dart';
 import 'package:appointz_client/Views/Drawer/drawer_itembox.dart';
 import 'package:appointz_client/Views/Home/HomePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,10 +12,10 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../main.dart';
 
-
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({Key? key,}) : super(key: key);
-
+  const MyDrawer({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _MyDrawerState createState() => _MyDrawerState();
@@ -25,7 +27,8 @@ class _MyDrawerState extends State<MyDrawer> {
     super.initState();
   }
 
-  String text = 'http://play.google.com/store/apps/details?id=com.healthSolutions';
+  String text =
+      'http://play.google.com/store/apps/details?id=com.healthSolutions';
   final _auth = FirebaseAuth.instance;
   String subject = '';
   bool loader = false;
@@ -55,22 +58,21 @@ class _MyDrawerState extends State<MyDrawer> {
       ),
       child: SafeArea(
         child: Drawer(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(45.0),
           ),
           backgroundColor: cleanDarkBlueGrey,
           child: Drawer(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(45.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(45.0),
             ),
             backgroundColor: cleanDarkBlueGrey,
             child: Column(
               children: <Widget>[
-
-
                 Container(
                   color: cleanDarkBlueGrey,
                   padding: const EdgeInsets.only(left: 10),
                   height: 95,
-
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,81 +110,55 @@ class _MyDrawerState extends State<MyDrawer> {
                     ],
                   ),
                 ),
-
                 Expanded(
                   child: ListView(
                     children: [
                       DrawerItemBox(
                         blockIcon: Icons.home_outlined,
                         blockName: "Home",
-                        blockTapAction: (){
+                        blockTapAction: () {
                           Navigator.of(context).pushAndRemoveUntil(
                             CupertinoPageRoute(
                                 builder: (context) => const HomePage()),
-                                (Route<dynamic> route) => false,
+                            (Route<dynamic> route) => false,
                           );
                         },
                       ),
-
-                      // DrawerItemBox(
-                      //   blockIcon: Icons.call,
-                      //   blockName: "Call Us",
-                      //   blockTapAction: (){},
-                      // ),
-
                       DrawerItemBox(
                         blockIcon: Icons.history_rounded,
                         blockName: "History",
-                        blockTapAction: (){},
+                        blockTapAction: () {},
                       ),
-
-                      // DrawerItemBox(
-                      //   blockIcon: Icons.people_alt_outlined,
-                      //   blockName: "Our Partners",
-                      //   blockTapAction: (){},
-                      // ),
-
                       DrawerItemBox(
                         blockIcon: Icons.share,
                         blockName: "Share",
-                        blockTapAction: (){},
+                        blockTapAction: () {},
                       ),
-
-                      // DrawerItemBox(
-                      //   blockIcon: Icons.notifications_active_outlined,
-                      //   blockName: "Notifications",
-                      //   blockTapAction: (){},
-                      // ),
-
                       DrawerItemBox(
                         blockIcon: Icons.medical_services_outlined,
                         blockName: "Doctor Advice",
-                        blockTapAction: (){},
+                        blockTapAction: () {},
                       ),
-
                       DrawerItemBox(
                         blockIcon: Icons.description_outlined,
                         blockName: "Terms and Conditions",
-                        blockTapAction: (){},
+                        blockTapAction: () {},
                       ),
-
                       DrawerItemBox(
                         blockIcon: Icons.login_outlined,
                         blockName: "Logout",
-                        blockTapAction: (){
-                          // _logOut();
+                        blockTapAction: () {
+                          _logOut();
                         },
                       ),
-
                       DrawerItemBox(
                         blockIcon: Icons.info_outlined,
                         blockName: "Version",
-                        blockTapAction: (){},
+                        blockTapAction: () {},
                       ),
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -191,38 +167,34 @@ class _MyDrawerState extends State<MyDrawer> {
     );
   }
 
-  void _logOut() async {
+  final ToastMsg _toast = ToastMsg();
 
-      setState(() {
-        loader = true;
+  Future _logOut() async {
+    try {
+      await _auth.signOut().then((value){
+        Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => const SplashScreen()));
       });
-
-      try {
-
-      } on SocketException {
-        debugPrint('Sign out Failed Sockets Suspension');
-        setState(() {
-          loader = false;
-        });
-
-      } on HttpException {
-        debugPrint('Sign out Failed Http request failed');
-        setState(() {
-          loader = false;
-        });
-
-      } on FirebaseAuthException catch (firebaseError) {
-        debugPrint(firebaseError.toString());
-        setState(() {
-          loader = false;
-        });
-
-      } catch (e) {
-        debugPrint('Sign out Failed $e');
-        setState(() {
-          loader = false;
-        });
-
-      }
+    } on SocketException {
+      debugPrint('Sign out Failed Sockets Suspension');
+      setState(() {
+        loader = false;
+      });
+    } on HttpException {
+      debugPrint('Sign out Failed Http request failed');
+      setState(() {
+        loader = false;
+      });
+    } on FirebaseAuthException catch (firebaseError) {
+      debugPrint(firebaseError.toString());
+      setState(() {
+        loader = false;
+      });
+    } catch (e) {
+      debugPrint('Sign out Failed $e');
+      setState(() {
+        loader = false;
+      });
+    }
   }
 }
